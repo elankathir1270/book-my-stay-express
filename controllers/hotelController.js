@@ -3,7 +3,35 @@ const Hotel = require('./../model/hotel.js');
 exports.getAll = async (req, res) => {
 
     try{
-        const hotels = await Hotel.find();
+        /*
+        //multiple ways of filtering
+        const hotels = await Hotel.find({city: "Mumbai", ratings: {$gte: 4.5}});
+        const hotels = await Hotel.find()
+                                .where('city').equals('Mumbai')
+                                .where('ratings').gte(4); //built-in methods
+         */
+
+        //Excluding other fields not required in filter object
+        const excludeFields = ['sort','limit','page','fields'];
+        const queryObj = {...req.query};
+        excludeFields.forEach((el) => {
+            delete queryObj[el];
+        })
+
+        const optimizedQuery = getOptimizedFilterQuery(queryObj);
+
+        //Querying the documents from the collection
+        let query = Hotel.find(optimizedQuery);
+
+        //Sorting the results
+        if(req.query.sort) {
+            const sortBy = req.query.sort.split(',').join(' ');
+            query = query.sort(sortBy);
+        }else{
+            query = query.sort('cheapestPrice');
+        }
+
+        const hotels = await query;
 
         res.status(200).json({
             status: "success",
@@ -105,3 +133,31 @@ exports.delete = async (req,res) => {
 
 }
 
+const getOptimizedFilterQuery = (queyObj) => {
+    const filterQuery = {}
+    //Received: { city: 'Mumbai', 'cheapestPrice[lt]': '100', 'ratings[gte]': '4' }
+    //Required : { city: 'Mumbai', cheapestPrice: { '$lt': '100' }, ratings: { '$gte': '4' } }
+
+    
+    for(let key in queyObj) {
+        const value = queyObj[key];
+        const match = key.match(/^(.*)\[(gt|gte|lt|lte)\]$/);
+
+        if(match) {
+            const fieldName = match[1];
+            const operator = `$${match[2]}`;
+
+            if(!filterQuery[fieldName]) {
+                filterQuery[fieldName] = {}
+            }
+            filterQuery[fieldName][operator] = value;
+        }else{
+            filterQuery[key] = value;
+        }
+        
+    }
+    //console.log(queyObj);
+    //console.log(filterQuery);
+    return filterQuery;
+
+}
