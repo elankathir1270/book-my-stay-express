@@ -220,24 +220,24 @@
     "ratings": 4.1
   },
   {
-    "name": "The Serai, Bandipur",
+    "name": "The Serai, Chennai",
     "description": "A nature resort offering wildlife experiences.",
     "type": "Resort",
     "category": ["Nature", "Wildlife"],
-    "city": "Bandipur",
-    "address": "Bandipur National Park, Karnataka",
-    "distance": "50 miles from Mysore Airport",
+    "city": "Chennai",
+    "address": "Bandipur National Park, Tamilnadu",
+    "distance": "50 miles from Chennai Airport",
     "cheapestPrice": 220,
     "ratings": 4.5
   },
   {
-    "name": "Lemon Tree Hotel, Indore",
+    "name": "Lemon Tree Hotel",
     "description": "A budget-friendly business hotel with modern facilities.",
     "type": "Hotel",
     "category": ["Budget", "Business"],
-    "city": "Indore",
-    "address": "RNT Marg, Indore, MP 452001",
-    "distance": "6 miles from Indore Airport (IDR)",
+    "city": "Mumbai",
+    "address": "RNT Marg, Mumbai 452001",
+    "distance": "6 miles from Mumbai Airport (IDR)",
     "cheapestPrice": 90,
     "ratings": 4.0
   },
@@ -253,13 +253,13 @@
     "ratings": 3.9
   },
   {
-    "name": "The Golden Tusk, Jim Corbett",
+    "name": "The Golden Tusk",
     "description": "A wildlife resort offering safari experiences and luxury stays.",
     "type": "Resort",
     "category": ["Wildlife", "Nature", "Luxury"],
-    "city": "Jim Corbett",
-    "address": "Dhikuli, Ramnagar, Uttarakhand 244715",
-    "distance": "50 miles from Pantnagar Airport (PGH)",
+    "city": "Mumbai",
+    "address": "Dhikuli, Ramnagar, Mumbai 244715",
+    "distance": "50 miles from Mumbai Airport (PGH)",
     "cheapestPrice": 210,
     "ratings": 4.6
   }
