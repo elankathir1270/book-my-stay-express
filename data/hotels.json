@@ -1,1 +1,266 @@
-[{"id":1,"name":"Grand Palace Hotel","type":"Luxury","ratings":4.8,"city":"Mumbai","country":"India","price":12000},{"id":3,"name":"Mountain View Lodge","type":"Boutique","ratings":4.2,"city":"Manali","country":"India","price":6000},{"id":4,"name":"City Central Inn","type":"Budget","ratings":3.9,"city":"Delhi","country":"India","price":3000},{"id":5,"name":"Royal Heritage Palace","type":"Luxury","ratings":4.7,"city":"Jaipur","country":"India","price":11000},{"id":6,"name":"Lakeview Retreat","type":"Resort","ratings":4.4,"city":"Udaipur","country":"India","price":9000},{"id":7,"name":"SRK","type":"Resort","ratings":4.8,"city":"Tamilnadu","country":"India","price":10000},{"id":8,"name":"TSV","type":"Resort","ratings":4.5,"city":"Tamilnadu","country":"India","price":5000}]
+[
+  {
+    "name": "Hyatt Regency, Pune",
+    "description": "A premium hotel offering modern comfort and excellent dining options in Pune.",
+    "type": "Hotel",
+    "category": ["Luxury", "Business", "Urban"],
+    "city": "Pune",
+    "address": "Weikfield IT Park, Nagar Road, Pune, Maharashtra 411014",
+    "distance": "3 miles from Pune Airport (PNQ)",
+    "cheapestPrice": 190,
+    "ratings": 4.3
+  },
+  {
+    "name": "JW Marriott, Bengaluru",
+    "description": "A sophisticated luxury hotel with top-tier amenities in the heart of Bengaluru.",
+    "type": "Hotel",
+    "category": ["Luxury", "Business", "Urban"],
+    "city": "Bengaluru",
+    "address": "Vittal Mallya Road, Bengaluru, Karnataka 560001",
+    "distance": "22 miles from Kempegowda International Airport (BLR)",
+    "cheapestPrice": 210,
+    "ratings": 4.6
+  },
+  {
+    "name": "The Park, Kolkata",
+    "description": "A trendy boutique hotel known for its vibrant nightlife and modern decor.",
+    "type": "Hotel",
+    "category": ["Boutique", "Urban", "Nightlife"],
+    "city": "Kolkata",
+    "address": "17 Park Street, Kolkata, West Bengal 700016",
+    "distance": "10 miles from Netaji Subhash Chandra Bose Airport (CCU)",
+    "cheapestPrice": 140,
+    "ratings": 4.1
+  },
+  {
+    "name": "Novotel, Hyderabad",
+    "description": "A comfortable business hotel with spacious rooms and conference facilities.",
+    "type": "Hotel",
+    "category": ["Business", "Urban"],
+    "city": "Hyderabad",
+    "address": "HITEC City, Hyderabad, Telangana 500081",
+    "distance": "20 miles from Rajiv Gandhi International Airport (HYD)",
+    "cheapestPrice": 170,
+    "ratings": 4.3
+  },
+  {
+    "name": "Le Meridien, Kochi",
+    "description": "A scenic waterfront hotel offering tranquil surroundings and luxury services.",
+    "type": "Resort",
+    "category": ["Luxury", "Resort", "Waterfront"],
+    "city": "Kochi",
+    "address": "Maradu, Kochi, Kerala 682304",
+    "distance": "18 miles from Cochin International Airport (COK)",
+    "cheapestPrice": 160,
+    "ratings": 4.4
+  },
+  {
+    "name": "Taj West End, Bengaluru",
+    "description": "A heritage luxury hotel set amidst lush gardens in Bengaluru.",
+    "type": "Hotel",
+    "category": ["Luxury", "Historic", "Urban"],
+    "city": "Bengaluru",
+    "address": "Race Course Road, Bengaluru, Karnataka 560001",
+    "distance": "21 miles from Kempegowda Airport (BLR)",
+    "cheapestPrice": 250,
+    "ratings": 4.7
+  },
+  {
+    "name": "The Lalit, Chandigarh",
+    "description": "A stylish hotel offering contemporary rooms and business facilities.",
+    "type": "Hotel",
+    "category": ["Business", "Luxury"],
+    "city": "Chandigarh",
+    "address": "Rajiv Gandhi IT Park, Chandigarh 160101",
+    "distance": "6 miles from Chandigarh Airport (IXC)",
+    "cheapestPrice": 150,
+    "ratings": 4.2
+  },
+  {
+    "name": "Vivanta, Coimbatore",
+    "description": "A modern hotel known for comfort, great service, and central location.",
+    "type": "Hotel",
+    "category": ["Business", "Urban"],
+    "city": "Coimbatore",
+    "address": "Race Course Road, Coimbatore, Tamil Nadu 641018",
+    "distance": "7 miles from Coimbatore Airport (CJB)",
+    "cheapestPrice": 130,
+    "ratings": 4.3
+  },
+  {
+    "name": "Club Mahindra, Munnar",
+    "description": "A serene hill resort surrounded by tea plantations and misty landscapes.",
+    "type": "Resort",
+    "category": ["Resort", "Nature", "Hill"],
+    "city": "Munnar",
+    "address": "Chinnakanal, Munnar, Kerala 685618",
+    "distance": "70 miles from Cochin Airport (COK)",
+    "cheapestPrice": 180,
+    "ratings": 4.5
+  },
+  {
+    "name": "Sterling Ooty Elk Hill",
+    "description": "A hillside resort offering panoramic views of Ooty and cozy accommodations.",
+    "type": "Resort",
+    "category": ["Resort", "Hill", "Nature"],
+    "city": "Ooty",
+    "address": "Ramakrishna Mutt Road, Ooty, Tamil Nadu 643001",
+    "distance": "55 miles from Coimbatore Airport (CJB)",
+    "cheapestPrice": 150,
+    "ratings": 4.3
+  },
+  {
+    "name": "The Gateway Hotel, Nashik",
+    "description": "A peaceful getaway hotel surrounded by greenery and vineyards.",
+    "type": "Hotel",
+    "category": ["Resort", "Nature"],
+    "city": "Nashik",
+    "address": "Ambad MIDC, Nashik, Maharashtra 422010",
+    "distance": "12 miles from Nashik Airport",
+    "cheapestPrice": 140,
+    "ratings": 4.2
+  },
+  {
+    "name": "Radisson Blu, Guwahati",
+    "description": "A premium hotel with scenic views and modern amenities.",
+    "type": "Hotel",
+    "category": ["Luxury", "Urban"],
+    "city": "Guwahati",
+    "address": "National Highway 37, Guwahati, Assam 781033",
+    "distance": "12 miles from Lokpriya Gopinath Bordoloi Airport (GAU)",
+    "cheapestPrice": 160,
+    "ratings": 4.4
+  },
+  {
+    "name": "Fortune Park, Ahmedabad",
+    "description": "A well-equipped business hotel with comfortable stays.",
+    "type": "Hotel",
+    "category": ["Business", "Urban"],
+    "city": "Ahmedabad",
+    "address": "Ellis Bridge, Ahmedabad, Gujarat 380006",
+    "distance": "6 miles from Ahmedabad Airport (AMD)",
+    "cheapestPrice": 120,
+    "ratings": 4.1
+  },
+  {
+    "name": "The Zuri White Sands, Goa",
+    "description": "A luxurious beachfront resort with private beach access.",
+    "type": "Resort",
+    "category": ["Luxury", "Beach", "Resort"],
+    "city": "Goa",
+    "address": "Varca Beach, Goa 403721",
+    "distance": "17 miles from Goa Airport (GOI)",
+    "cheapestPrice": 220,
+    "ratings": 4.6
+  },
+  {
+    "name": "Welcomhotel, Dwarka",
+    "description": "A comfortable hotel near religious sites with modern amenities.",
+    "type": "Hotel",
+    "category": ["Religious", "Urban"],
+    "city": "Dwarka",
+    "address": "Devbhumi Dwarka, Gujarat 361335",
+    "distance": "85 miles from Jamnagar Airport (JGA)",
+    "cheapestPrice": 110,
+    "ratings": 4.0
+  },
+  {
+    "name": "The Himalayan, Manali",
+    "description": "A castle-style luxury resort nestled in the mountains.",
+    "type": "Resort",
+    "category": ["Luxury", "Hill", "Nature"],
+    "city": "Manali",
+    "address": "Hadimba Road, Manali, Himachal Pradesh 175131",
+    "distance": "32 miles from Bhuntar Airport (KUU)",
+    "cheapestPrice": 200,
+    "ratings": 4.7
+  },
+  {
+    "name": "Hotel Polo Towers, Shillong",
+    "description": "A premium hotel offering scenic views and modern comfort.",
+    "type": "Hotel",
+    "category": ["Urban", "Nature"],
+    "city": "Shillong",
+    "address": "Polo Grounds, Shillong, Meghalaya 793001",
+    "distance": "18 miles from Shillong Airport (SHL)",
+    "cheapestPrice": 130,
+    "ratings": 4.2
+  },
+  {
+    "name": "Taj Fisherman’s Cove, Chennai",
+    "description": "A beachside luxury resort offering relaxing sea views.",
+    "type": "Resort",
+    "category": ["Luxury", "Beach", "Resort"],
+    "city": "Chennai",
+    "address": "Covelong Beach, Chennai, Tamil Nadu 603112",
+    "distance": "22 miles from Chennai Airport (MAA)",
+    "cheapestPrice": 210,
+    "ratings": 4.6
+  },
+  {
+    "name": "ITC Maurya, New Delhi",
+    "description": "A prestigious luxury hotel known for fine dining and service.",
+    "type": "Hotel",
+    "category": ["Luxury", "Business"],
+    "city": "New Delhi",
+    "address": "Diplomatic Enclave, New Delhi 110021",
+    "distance": "8 miles from Delhi Airport (DEL)",
+    "cheapestPrice": 240,
+    "ratings": 4.7
+  },
+  {
+    "name": "Radisson Jass, Khajuraho",
+    "description": "A comfortable stay near historic temples.",
+    "type": "Hotel",
+    "category": ["Historic", "Tourist"],
+    "city": "Khajuraho",
+    "address": "Bypass Road, Khajuraho, MP 471606",
+    "distance": "3 miles from Khajuraho Airport",
+    "cheapestPrice": 100,
+    "ratings": 4.1
+  },
+  {
+    "name": "The Serai, Bandipur",
+    "description": "A nature resort offering wildlife experiences.",
+    "type": "Resort",
+    "category": ["Nature", "Wildlife"],
+    "city": "Bandipur",
+    "address": "Bandipur National Park, Karnataka",
+    "distance": "50 miles from Mysore Airport",
+    "cheapestPrice": 220,
+    "ratings": 4.5
+  },
+  {
+    "name": "Lemon Tree Hotel, Indore",
+    "description": "A budget-friendly business hotel with modern facilities.",
+    "type": "Hotel",
+    "category": ["Budget", "Business"],
+    "city": "Indore",
+    "address": "RNT Marg, Indore, MP 452001",
+    "distance": "6 miles from Indore Airport (IDR)",
+    "cheapestPrice": 90,
+    "ratings": 4.0
+  },
+  {
+    "name": "Treebo Trend, Mysore",
+    "description": "An affordable hotel offering clean rooms and good service.",
+    "type": "Hotel",
+    "category": ["Budget", "Urban"],
+    "city": "Mysore",
+    "address": "Sayyaji Rao Road, Mysore, Karnataka 570001",
+    "distance": "8 miles from Mysore Airport",
+    "cheapestPrice": 80,
+    "ratings": 3.9
+  },
+  {
+    "name": "The Golden Tusk, Jim Corbett",
+    "description": "A wildlife resort offering safari experiences and luxury stays.",
+    "type": "Resort",
+    "category": ["Wildlife", "Nature", "Luxury"],
+    "city": "Jim Corbett",
+    "address": "Dhikuli, Ramnagar, Uttarakhand 244715",
+    "distance": "50 miles from Pantnagar Airport (PGH)",
+    "cheapestPrice": 210,
+    "ratings": 4.6
+  }
+]
