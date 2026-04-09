@@ -23,12 +23,20 @@ exports.getAll = async (req, res) => {
         //Querying the documents from the collection
         let query = Hotel.find(optimizedQuery);
 
-        //Sorting the results
+        //Sorting the results(add '-' before variable in req query for desc)
         if(req.query.sort) {
             const sortBy = req.query.sort.split(',').join(' ');
             query = query.sort(sortBy);
         }else{
             query = query.sort('cheapestPrice');
+        }
+
+        //Field limiting(add '-' before variable in req query for exclude)
+        if(req.query.fields) {
+            const fields = req.query.fields.split(",").join(' ');
+            query = query.select(fields);
+        }else{
+            query = query.select('-__v');
         }
 
         const hotels = await query;
