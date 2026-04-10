@@ -1,3 +1,4 @@
+const ApiFeature = require('./../utilities/features');
 const Hotel = require('./../model/hotel.js');
 
 //Alias route
@@ -11,57 +12,10 @@ exports.getFeaturedHotels = (req,res,next) => {
 
 exports.getAll = async (req, res) => {
 
+    const features = new ApiFeature(Hotel.find(), req.query);
+
     try{
-        /*
-        //multiple ways of filtering
-        const hotels = await Hotel.find({city: "Mumbai", ratings: {$gte: 4.5}});
-        const hotels = await Hotel.find()
-                                .where('city').equals('Mumbai')
-                                .where('ratings').gte(4); //built-in methods
-         */
-
-        //Excluding other fields not required in filter object
-        const excludeFields = ['sort','limit','page','fields'];
-        const queryObj = {...req.query};
-        excludeFields.forEach((el) => {
-            delete queryObj[el];
-        })
-
-        const optimizedQuery = getOptimizedFilterQuery(queryObj);
-
-        //Querying the documents from the collection
-        let query = Hotel.find(optimizedQuery);
-
-        //Sorting the results(add '-' before variable in req query for desc)
-        if(req.query.sort) {
-            //Sort by multiple fields, example: sort= -cheapestPrice,ratings
-            const sortBy = req.query.sort.split(',').join(' ');
-            query = query.sort(sortBy);
-        }else{
-            query = query.sort('cheapestPrice');
-        }
-
-        //Field limiting(add '-' before variable in req query for exclude)
-        if(req.query.fields) {
-            const fields = req.query.fields.split(",").join(' ');
-            query = query.select(fields);
-        }else{
-            query = query.select('-__v');
-        }
-
-        //Pagination
-        const limit = req.query.limit || 10;
-        const page = req.query.page || 1;
-        const skip = (page - 1) * 10;
-        
-        query  = query.skip(skip).limit(limit);
-
-        if(req.query.page) {
-            const totalDocuments = await Hotel.countDocuments();
-            if(skip >= totalDocuments){
-                throw new Error("This page is not found")
-            }
-        }
+        const query  = features.filter().sort().limitFields().paginate().queryObj;
 
         const hotels = await query;
 
@@ -165,31 +119,4 @@ exports.delete = async (req,res) => {
 
 }
 
-const getOptimizedFilterQuery = (queyObj) => {
-    const filterQuery = {}
-    //Received: { city: 'Mumbai', 'cheapestPrice[lt]': '100', 'ratings[gte]': '4' }
-    //Required : { city: 'Mumbai', cheapestPrice: { '$lt': '100' }, ratings: { '$gte': '4' } }
 
-    
-    for(let key in queyObj) {
-        const value = queyObj[key];
-        const match = key.match(/^(.*)\[(gt|gte|lt|lte)\]$/);
-
-        if(match) {
-            const fieldName = match[1];
-            const operator = `$${match[2]}`;
-
-            if(!filterQuery[fieldName]) {
-                filterQuery[fieldName] = {}
-            }
-            filterQuery[fieldName][operator] = value;
-        }else{
-            filterQuery[key] = value;
-        }
-        
-    }
-    //console.log(queyObj);
-    //console.log(filterQuery);
-    return filterQuery;
-
-}
