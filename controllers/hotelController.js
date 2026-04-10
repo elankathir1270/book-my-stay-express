@@ -39,6 +39,20 @@ exports.getAll = async (req, res) => {
             query = query.select('-__v');
         }
 
+        //Pagination
+        const limit = req.query.limit || 10;
+        const page = req.query.page || 1;
+        const skip = (page - 1) * 10;
+        
+        query  = query.skip(skip).limit(limit);
+
+        if(req.query.page) {
+            const totalDocuments = await Hotel.countDocuments();
+            if(skip >= totalDocuments){
+                throw new Error("This page is not found")
+            }
+        }
+
         const hotels = await query;
 
         res.status(200).json({
