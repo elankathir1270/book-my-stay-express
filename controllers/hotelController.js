@@ -1,5 +1,14 @@
 const Hotel = require('./../model/hotel.js');
 
+//Alias route
+exports.getFeaturedHotels = (req,res,next) => {
+    Object.defineProperty(req,"query",{
+        value: {...req.query, featured : "true", sort : "-ratings",limit : "5"},
+        writable: true
+    })
+    next();
+}
+
 exports.getAll = async (req, res) => {
 
     try{
@@ -25,6 +34,7 @@ exports.getAll = async (req, res) => {
 
         //Sorting the results(add '-' before variable in req query for desc)
         if(req.query.sort) {
+            //Sort by multiple fields, example: sort= -cheapestPrice,ratings
             const sortBy = req.query.sort.split(',').join(' ');
             query = query.sort(sortBy);
         }else{
