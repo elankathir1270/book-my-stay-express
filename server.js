@@ -1,9 +1,11 @@
 const mongoose = require('mongoose');
+const dotenv = require("dotenv");
+dotenv.config({
+    path: "./config.env"
+})
 const app = require("./app");
 
-
-
-const contString = 'mongodb+srv://admin:9JmFCWyNjjWOprHo@cluster0.7035lmz.mongodb.net/bookmystay?appName=Cluster0'
+const contString = process.env.CONNECTION_STRING
 mongoose.connect(contString)
 .then((conn) => console.log('Connection to db successful'))
 .catch((err) => console.error('Could not connect to MongoDB', err))
@@ -17,8 +19,8 @@ mongoose.connect(contString)
 
 
 //create and listen web server
-const port = 3000;
-app.listen(port, 'localhost', () => {
+const port = process.env.PORT | 3000;
+app.listen(port, () => {
     console.log("Express Server is up and running..");
     
 });

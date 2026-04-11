@@ -16,7 +16,9 @@ app.use(express.json());
 app.use(express.static('./public'))
 
 //Morgan middleware(third party middleware)
-app.use(morgan('dev'))
+if(process.env.NODE_ENV === 'development'){
+    app.use(morgan('dev'));
+}
 
 //custom middleware
 app.use((req,res,next) =>  {
