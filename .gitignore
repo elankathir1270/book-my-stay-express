@@ -1,7 +1,5 @@
 node_modules/
-<<<<<<< HEAD
 .env
 dist/
 build/
-=======
->>>>>>> filter-sort
+
