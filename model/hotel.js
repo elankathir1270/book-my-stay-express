@@ -50,6 +50,14 @@ const hotelSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     }
+
+},
+{
+    toJSON: {virtuals: true}, toObject: {virtuals: true}
 })
+    //VirtualProperty
+    hotelSchema.virtual('isPremium').get(function() {
+        return this.cheapestPrice >= 200
+    })
 
 module.exports = mongoose.model('Hotel', hotelSchema) //args: model name, schema.
