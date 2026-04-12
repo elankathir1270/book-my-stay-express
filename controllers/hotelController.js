@@ -132,8 +132,8 @@ exports.getHotelStats = async (req,res) => {
                 count: { $sum: 1 }
             }},
             { $sort: { minPrice : 1}}, //for desc '-1'
-            { $match: { count: { $gte: 2 }}},
-            { $sort: { count : -1}}
+            // { $match: { count: { $gte: 2 }}},
+            // { $sort: { count : -1}}
 
         ]);
 
@@ -143,6 +143,42 @@ exports.getHotelStats = async (req,res) => {
             data: {
                 stats
             }
+        })
+
+    }catch(error) {
+        res.status(500).json({
+            status: "fail",
+            message: "Something went wrong, please try again later" + error.message
+        })
+    }
+}
+
+exports.getHotelsByCategory = async (req,res) => {
+    try{
+        const category = req.params.category;        
+
+        const hotels = await Hotel.aggregate([
+            {$unwind : '$category'},
+            {$group: {
+                _id: "$category",
+                count: {$sum: 1},
+                hotels: {$push: "$name"}
+
+            }},
+            {$addFields: {category: '$_id'}},
+            {$project: {_id: 0}},
+            {$match: { category : category}},
+            {$sort: {count: -1}},
+            //{$limit: 5}
+        ])
+
+        res.status(200).json({
+            status: "success",
+            count: hotels.length,
+            data: {
+                hotels
+            }
+
         })
 
     }catch(error) {
