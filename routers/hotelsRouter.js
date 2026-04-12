@@ -3,13 +3,12 @@ const hotelsController = require('../controllers/hotelController')
 
 const hotelRouter = express.Router();
 
-//Route Chaining
 hotelRouter.route('/get-featured')
-.get(hotelsController.getFeaturedHotels, hotelsController.getAll);
-hotelRouter.route('/get-hotel-stats')
-.get(hotelsController.getHotelStats);
-hotelRouter.route('/get-hotel-by-category/:category')
-.get(hotelsController.getHotelsByCategory);
+.get(hotelsController.getFeaturedHotels);
+hotelRouter.route('/get-hotels-by-city')
+.get(hotelsController.getHotelsByCity);
+hotelRouter.route('/get-hotels-by-type')
+.get(hotelsController.getHotelsByType);
 
 hotelRouter.route('/')
 .get(hotelsController.getAll)
@@ -19,5 +18,15 @@ hotelRouter.route('/:id')
 .get(hotelsController.getById)
 .patch(hotelsController.update)
 .delete(hotelsController.delete)
+
+
+/**
+//used for aggregate  
+ 
+hotelRouter.route('/get-hotel-stats')
+.get(hotelsController.getHotelStats);
+hotelRouter.route('/get-hotel-by-category/:category')
+.get(hotelsController.getHotelsByCategory);
+ */
 
 module.exports = hotelRouter;

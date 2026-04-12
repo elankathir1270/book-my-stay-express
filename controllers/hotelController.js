@@ -1,14 +1,6 @@
 const ApiFeature = require('./../utilities/features');
 const Hotel = require('./../model/hotel.js');
 
-//Alias route
-exports.getFeaturedHotels = (req,res,next) => {
-    Object.defineProperty(req,"query",{
-        value: {...req.query, featured : "true", sort : "-ratings",limit : "5"},
-        writable: true
-    })
-    next();
-}
 
 exports.getAll = async (req, res) => {
 
@@ -119,6 +111,96 @@ exports.delete = async (req,res) => {
 
 }
 
+//Get all featured hotels
+exports.getFeaturedHotels = async (req,res) => {
+    try{
+        const featuredHotels = await Hotel.aggregate([
+            {$match: {featured: true}},
+            {$sort: {ratings: -1}},
+            {$limit: 4}
+        ])
+
+        res.status(200).json({
+            status: "success",
+            data: {
+                featured: featuredHotels
+            }
+        })
+
+    }catch(error) {
+            res.status(500).json({
+            status: "fail",
+            message: "Something went wrong, please try again later. Error: "+ error.message
+        })
+    }
+}
+
+//Get the hotels by city
+exports.getHotelsByCity = async (req,res) => {
+    try{
+        const hotelsByCity = await Hotel.aggregate([
+            {$group:{
+                _id: "$city",
+                hotels: {$push: "$name"},
+                count: {$sum: 1},
+                cheapestPrice: {$min : "$cheapestPrice"}
+            }},
+            {$addFields: {city: "$_id"}},
+            {$project: {_id : 0}},
+            {$sort: {count : -1}},
+            {$limit: 4}
+
+        ])
+
+        res.status(200).json({
+            status: "success",
+            data:{
+                hotels: hotelsByCity
+            }
+        })
+
+    }catch(error){
+            res.status(500).json({
+            status: "fail",
+            message: "Something went wrong, please try again later. Error: "+ error.message
+        })
+    }
+} 
+
+//Get the hotels by type
+exports.getHotelsByType = async (req,res) => {
+    try{
+        const hotelsByType = await Hotel.aggregate([
+            {$group:{
+                _id: "$type",
+                hotels: {$push: "$name"},
+                count: {$sum: 1},
+            }},
+            {$addFields: {type: "$_id"}},
+            {$project: {_id : 0}},
+            {$sort: {count : -1}},
+            {$limit: 3}
+
+        ])
+
+        res.status(200).json({
+            status: "success",
+            data:{
+                hotels: hotelsByType
+            }
+        })
+
+    }catch(error){
+            res.status(500).json({
+            status: "fail",
+            message: "Something went wrong, please try again later. Error: "+ error.message
+        })
+    }
+} 
+
+
+/**
+//To know the use of Aggregate framework
 exports.getHotelStats = async (req,res) => {
     try{
         const stats = await Hotel.aggregate([
@@ -188,5 +270,7 @@ exports.getHotelsByCategory = async (req,res) => {
         })
     }
 }
+ */
+
 
 
