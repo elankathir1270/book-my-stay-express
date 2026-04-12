@@ -108,7 +108,7 @@ exports.delete = async (req,res) => {
         res.status(204).json({
             status: "success",
         })
-    }catch{
+    }catch(error) {
         res.status(500).json({
             status: "fail",
             message: "Something went wrong, please try again later"
@@ -117,6 +117,40 @@ exports.delete = async (req,res) => {
 
 
 
+}
+
+exports.getHotelStats = async (req,res) => {
+    try{
+        const stats = await Hotel.aggregate([
+            { $match: { type: 'Hotel'}},
+            { $group: {
+                _id: '$city',  // or 'null' will return only one value. 
+                avgRatings: { $avg : '$ratings'},
+                minPrice: { $min: '$cheapestPrice'},
+                maxPrice: { $max: '$cheapestPrice'},
+                totalPrice: { $sum: '$cheapestPrice'},
+                count: { $sum: 1 }
+            }},
+            { $sort: { minPrice : 1}}, //for desc '-1'
+            { $match: { count: { $gte: 2 }}},
+            { $sort: { count : -1}}
+
+        ]);
+
+        res.status(200).json({
+            status: "success",
+            count: stats.length,
+            data: {
+                stats
+            }
+        })
+
+    }catch(error) {
+        res.status(500).json({
+            status: "fail",
+            message: "Something went wrong, please try again later" + error.message
+        })
+    }
 }
 
 
