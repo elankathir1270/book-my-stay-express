@@ -8,6 +8,8 @@ hotelRouter.route('/get-featured')
 .get(hotelsController.getFeaturedHotels, hotelsController.getAll);
 hotelRouter.route('/get-hotel-stats')
 .get(hotelsController.getHotelStats);
+hotelRouter.route('/get-hotel-by-category/:category')
+.get(hotelsController.getHotelsByCategory);
 
 hotelRouter.route('/')
 .get(hotelsController.getAll)
