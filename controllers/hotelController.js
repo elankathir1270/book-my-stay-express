@@ -42,10 +42,10 @@ exports.create = async (req,res) => {
                 hotel
             }
         })
-    }catch{
+    }catch(error){
         res.status(500).json({
             status: "fail",
-            message: "Something went wrong, please try again later"
+            message: "Something went wrong, please try again later: "+ error.message
         })
     }
 
