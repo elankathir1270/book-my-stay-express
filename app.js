@@ -33,12 +33,25 @@ app.use('/api/v1/users', userRouter);
 
 
 //Default route
-app.all("*splat", (req,res) => {
-    res.status(404).json({
-        status: "fail",
-        message: `Cannot find the resource ${req.originalUrl}`
+app.all("*splat", (req,res,next) => {
+
+    const error = new Error(`Cannot find the resource ${req.originalUrl}`);
+    error.statusCode = 404;
+    error.status = 'fail';
+    next(error);
+})
+
+//Global error handling middleware
+app.use((error,req,res,next) => {
+    const statusCode = error.statusCode || 500;
+    const status = error.status || "Error";
+
+    res.status(statusCode).json({
+        status,
+        message: error.message
     })
 })
+
 
 module.exports = app;
 
