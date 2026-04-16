@@ -6,15 +6,20 @@ const hotelSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Hotel name is required'],
         trim: true,
+        match: /^[a-zA-Z]/
     },
     description: {
         type: String,
         required: [true, 'Description is required'],
         trim: true,
     },
-    type: { //"Hotel","Resort","Villa","Apartment","Cabin"
+    type: {
         type: String,
         required: [true, 'Hotel type is required'],
+        enum:{
+            values: ["Hotel","Resort","Villa","Apartment","Cabin"],
+            message: "Provided hotel type is not valid" 
+        } // type will allow only this values
     },
     category: {
         type: [String],
@@ -39,6 +44,12 @@ const hotelSchema = new mongoose.Schema({
         type: Number,
         min: 0,
         max: 5
+        // validate: { // custom validator using 'validate property'
+        //     validator : function(value) {
+        //         return value >= 0 && value <= 5;
+        //     },
+        //     message: `The 'ratings' field should have value between 0 to 5. Current specified value is ({VALUE})`
+        // } 
     },
     rooms: {
         type: [String]
