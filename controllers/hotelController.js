@@ -76,7 +76,7 @@ exports.update = async (req,res) => {
     try{
         const body = req.body;
         const id = req.params.id;
-        const updatedHotel = await Hotel.findByIdAndUpdate( id, body, { new: true, runValidators: true }); //updateOne({_id : id}, req.body);    
+        const updatedHotel = await Hotel.findOneAndUpdate( {_id: id}, body, { new: true, runValidators: true }); //updateOne({_id : id}, req.body);    
 
         res.status(200).json({
             status: "success",
@@ -84,10 +84,10 @@ exports.update = async (req,res) => {
                 hotel : updatedHotel
             }
         })
-    }catch{
+    }catch(error){
         res.status(500).json({
             status: "fail",
-            message: "Something went wrong, please try again later"
+            message: "Something went wrong, please try again later: " + error.message
         })
     }
 
