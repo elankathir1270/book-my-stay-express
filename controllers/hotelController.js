@@ -1,5 +1,6 @@
 const ApiFeature = require('./../utilities/features');
 const Hotel = require('./../model/hotel.js');
+const AppError = require('./../utilities/appError');
 
 
 exports.getAll = async (req, res) => {
@@ -28,7 +29,7 @@ exports.getAll = async (req, res) => {
 
 }
 
-exports.create = async (req,res) => {
+exports.create = async (req,res,next) => {
     try{
         //const hotel = new Hotel(req.body);
         //const newHotel = await hotel.save();
@@ -43,10 +44,8 @@ exports.create = async (req,res) => {
             }
         })
     }catch(error){
-        res.status(500).json({
-            status: "fail",
-            message: "Something went wrong, please try again later: "+ error.message
-        })
+            const err = new AppError(error.message, 400);
+            next(err);
     }
 
 }

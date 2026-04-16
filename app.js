@@ -2,6 +2,8 @@ const express = require('express');
 const morgan = require('morgan');
 const hotelRouter = require('./routers/hotelsRouter');
 const userRouter = require('./routers/usersRouter');
+const AppError = require('./utilities/appError');
+const globalErrorHandler = require('./controllers/errorController')
 
 //Creating express app
 //get instance of express function
@@ -35,22 +37,12 @@ app.use('/api/v1/users', userRouter);
 //Default route
 app.all("*splat", (req,res,next) => {
 
-    const error = new Error(`Cannot find the resource ${req.originalUrl}`);
-    error.statusCode = 404;
-    error.status = 'fail';
+    const error = new AppError(`Cannot find the resource ${req.originalUrl}`, 404);
     next(error);
 })
 
 //Global error handling middleware
-app.use((error,req,res,next) => {
-    const statusCode = error.statusCode || 500;
-    const status = error.status || "Error";
-
-    res.status(statusCode).json({
-        status,
-        message: error.message
-    })
-})
+app.use(globalErrorHandler)
 
 
 module.exports = app;
