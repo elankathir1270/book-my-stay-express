@@ -11,6 +11,7 @@ const devErrors = (res,error) => {
 }
 
 const prodErrors = (res,error) => {
+
     if(error.isOperational) {
         res.status(error.statusCode).json({
             status: error.status,
@@ -30,6 +31,14 @@ const handleCastError = (error) => {
     return new AppError(errorMessage,400);
 }
 
+const duplicateKeyHandler = (error) => {
+    const field = Object.keys(error.keyValue)[0];
+    const value = error.keyValue[field];
+
+    const errorMessage = `A document with field - ${field} and value - ${value} is already exist`
+    return new AppError(errorMessage,400);
+}
+
 module.exports = (error,req,res,next) => {
 
     error.statusCode = error.statusCode || 500;
@@ -39,9 +48,13 @@ module.exports = (error,req,res,next) => {
         devErrors(res, error);
     }
     else{
-        let appError = {...error}
+        let appError = error 
+        //{...error} spread way only copies only enumerable properties(ex: error.statusCode) by default Error object properties are NOT enumerable
         if(error.name === 'CastError'){
             appError = handleCastError(error);
+        }
+        if(error.code === 11000) {
+            appError = duplicateKeyHandler(error)
         }
 
         prodErrors(res,appError);

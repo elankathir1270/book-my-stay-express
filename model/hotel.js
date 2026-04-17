@@ -6,7 +6,8 @@ const hotelSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Hotel name is required'],
         trim: true,
-        match: /^[a-zA-Z]/
+        match: /^[a-zA-Z]/,
+        unique: true
     },
     description: {
         type: String,
