@@ -39,6 +39,14 @@ const duplicateKeyHandler = (error) => {
     return new AppError(errorMessage,400);
 }
 
+const handleValidationError = (error) => {
+    const errors = Object.values(error.errors).map(val => val.message);
+    const message = errors.join('. ');
+
+    const errorMessage = `Invalid input data: ${message}`;
+    return new AppError(errorMessage,400);
+}
+
 module.exports = (error,req,res,next) => {
 
     error.statusCode = error.statusCode || 500;
@@ -55,6 +63,9 @@ module.exports = (error,req,res,next) => {
         }
         if(error.code === 11000) {
             appError = duplicateKeyHandler(error)
+        }
+        if(error.name === 'ValidationError') {
+            appError = handleValidationError(error)
         }
 
         prodErrors(res,appError);

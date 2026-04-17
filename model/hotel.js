@@ -43,8 +43,8 @@ const hotelSchema = new mongoose.Schema({
     },
     ratings: {
         type: Number,
-        min: 0,
-        max: 5
+        min: [0, "Ratings cannot be less than 0"],
+        max: [5, "Ratings cannot be greater than 5"]
         // validate: { // custom validator using 'validate property'
         //     validator : function(value) {
         //         return value >= 0 && value <= 5;
