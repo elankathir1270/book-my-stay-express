@@ -33,11 +33,16 @@ exports.create = catchAsync(async (req,res,next) => {
                 hotel
             }
         })
-    })
+})
 
 exports.getById = catchAsync(async (req,res,next) => {
         const id = req.params.id;    
         const hotel = await Hotel.findById(id);//findOne({_id: id});
+
+        if(!hotel) {
+            const error = new AppError('The hotel with given ID is not found', 404)
+            return next(error);
+        }
 
         res.status(200).json({
             status: "success",
@@ -52,7 +57,12 @@ exports.update = catchAsync(async (req,res,next) => {
 
         const body = req.body;
         const id = req.params.id;
-        const updatedHotel = await Hotel.findOneAndUpdate( {_id: id}, body, { new: true, runValidators: true }); //updateOne({_id : id}, req.body);    
+        const updatedHotel = await Hotel.findOneAndUpdate( {_id: id}, body, { new: true, runValidators: true }); //updateOne({_id : id}, req.body);  
+        
+        if(!updatedHotel) {
+            const error = new AppError('The hotel with given ID is not found', 404)
+            return next(error);
+        }
 
         res.status(200).json({
             status: "success",
@@ -65,7 +75,12 @@ exports.update = catchAsync(async (req,res,next) => {
 
 exports.delete = catchAsync(async (req,res,next) => {
    
-        await Hotel.findByIdAndDelete(req.params.id); //deleteOne({_id : req.params.id });
+        const deleteHotel = await Hotel.findByIdAndDelete(req.params.id); //deleteOne({_id : req.params.id });
+
+        if(!deleteHotel) {
+            const error = new AppError('The hotel with given ID is not found', 404)
+            return next(error);
+        }       
 
         res.status(204).json({
             status: "success",

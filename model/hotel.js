@@ -109,7 +109,7 @@ const hotelSchema = new mongoose.Schema({
     })
 
     hotelSchema.post('findOneAndUpdate', function(doc) {
-        const content = `${new Date()}: A Hotel document with ${doc.name} is updated by: ${doc.createdBy}.\n`
+        const content = `${new Date()}: A Hotel document with ${doc?.name} is updated by: ${doc?.createdBy}.\n`
         fs.writeFileSync("./logs/log.txt", content, {flag: "a"});
     })
 
