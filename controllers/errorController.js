@@ -1,3 +1,5 @@
+const AppError = require('./../utilities/appError')
+
 const devErrors = (res,error) => {
 
         res.status(error.statusCode).json({
@@ -23,16 +25,26 @@ const prodErrors = (res,error) => {
 
 }
 
+const handleCastError = (error) => {
+    const errorMessage = `Invalid value ${error.value}, for the property ${error.path}.`
+    return new AppError(errorMessage,400);
+}
 
 module.exports = (error,req,res,next) => {
 
-    const statusCode = error.statusCode || 500;
-    const status = error.status || "Error";
+    error.statusCode = error.statusCode || 500;
+    error.status = error.status || "Error";
 
     if(process.env.NODE_ENV === 'development'){
         devErrors(res, error);
-    }else{
-        prodErrors(res,error);
+    }
+    else{
+        let appError = {...error}
+        if(error.name === 'CastError'){
+            appError = handleCastError(error);
+        }
+
+        prodErrors(res,appError);
     }
 
 }
