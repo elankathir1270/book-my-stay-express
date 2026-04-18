@@ -3,12 +3,20 @@ const dotenv = require("dotenv");
 dotenv.config({
     path: "./config.env"
 })
+
+//Handling uncaught exception (sync code)
+process.on('uncaughtException', (error) => {
+    console.log(error.name +" : " + "error.message");
+    console.log("Uncaught exception occurred. shutting down");
+    process.exit(1);   
+})
+
 const app = require("./app");
 
 const contString = process.env.CONNECTION_STRING
 mongoose.connect(contString)
 .then((conn) => console.log('Connection to db successful'))
-//.catch((err) => console.error('Could not connect to MongoDB', err))
+.catch((err) => console.error('Could not connect to MongoDB', err))
 
 // //mongoose event - just for reference
 // const db = mongoose.connection
@@ -33,4 +41,4 @@ process.on('unhandledRejection', (error) => {
     server.close(() => {
         process.exit(1);
     })    
-})
+}) 
