@@ -1,15 +1,17 @@
 const ApiFeature = require('./../utilities/features');
 const Hotel = require('./../model/hotel.js');
+const AppError = require('./../utilities/appError');
+const catchAsync = require('../utilities/catchAsync');
 
 
-exports.getAll = async (req, res) => {
+
+exports.getAll = catchAsync(async (req, res,next) => {
 
     const features = new ApiFeature(Hotel.find(), req.query);
 
-    try{
-        const query  = features.filter().sort().limitFields().paginate().queryObj;
+    const query  = features.filter().sort().limitFields().paginate().queryObj;
 
-        const hotels = await query;
+    const hotels = await query;
 
         res.status(200).json({
             status: "success",
@@ -18,23 +20,12 @@ exports.getAll = async (req, res) => {
                 hotels
             }
         })
-    }catch{
-        res.status(500).json({
-            status: "fail",
-            message: "Something went wrong, please try again later"
-        })
-    }
 
+})
 
-}
+exports.create = catchAsync(async (req,res,next) => {
 
-exports.create = async (req,res) => {
-    try{
-        //const hotel = new Hotel(req.body);
-        //const newHotel = await hotel.save();
-        //OR
-
-        const hotel = await Hotel.create(req.body);
+    const hotel = await Hotel.create(req.body);
 
         res.status(201).json({
             status: "success",
@@ -42,20 +33,16 @@ exports.create = async (req,res) => {
                 hotel
             }
         })
-    }catch(error){
-        res.status(500).json({
-            status: "fail",
-            message: "Something went wrong, please try again later: "+ error.message
-        })
-    }
+})
 
-}
-
-
-exports.getById = async (req,res) => {
-    try{
+exports.getById = catchAsync(async (req,res,next) => {
         const id = req.params.id;    
         const hotel = await Hotel.findById(id);//findOne({_id: id});
+
+        if(!hotel) {
+            const error = new AppError('The hotel with given ID is not found', 404)
+            return next(error);
+        }
 
         res.status(200).json({
             status: "success",
@@ -63,20 +50,19 @@ exports.getById = async (req,res) => {
                 hotel
             }
         })
-    }catch{
-        res.status(500).json({
-            status: "fail",
-            message: "Something went wrong, please try again later"
-        })
-    }
 
-}
+})
 
-exports.update = async (req,res) => {
-    try{
+exports.update = catchAsync(async (req,res,next) => {
+
         const body = req.body;
         const id = req.params.id;
-        const updatedHotel = await Hotel.findOneAndUpdate( {_id: id}, body, { new: true, runValidators: true }); //updateOne({_id : id}, req.body);    
+        const updatedHotel = await Hotel.findOneAndUpdate( {_id: id}, body, { new: true, runValidators: true }); //updateOne({_id : id}, req.body);  
+        
+        if(!updatedHotel) {
+            const error = new AppError('The hotel with given ID is not found', 404)
+            return next(error);
+        }
 
         res.status(200).json({
             status: "success",
@@ -84,36 +70,26 @@ exports.update = async (req,res) => {
                 hotel : updatedHotel
             }
         })
-    }catch(error){
-        res.status(500).json({
-            status: "fail",
-            message: "Something went wrong, please try again later: " + error.message
-        })
-    }
 
-}
+})
 
-exports.delete = async (req,res) => {
-    try{    
-        await Hotel.findByIdAndDelete(req.params.id); //deleteOne({_id : req.params.id });
+exports.delete = catchAsync(async (req,res,next) => {
+   
+        const deleteHotel = await Hotel.findByIdAndDelete(req.params.id); //deleteOne({_id : req.params.id });
+
+        if(!deleteHotel) {
+            const error = new AppError('The hotel with given ID is not found', 404)
+            return next(error);
+        }       
 
         res.status(204).json({
             status: "success",
         })
-    }catch(error) {
-        res.status(500).json({
-            status: "fail",
-            message: "Something went wrong, please try again later"
-        })
-    }    
-
-
-
-}
+})
 
 //Get all featured hotels
-exports.getFeaturedHotels = async (req,res) => {
-    try{
+exports.getFeaturedHotels = catchAsync(async (req,res,next) => {
+
         const featuredHotels = await Hotel.aggregate([
             {$match: {featured: true}},
             {$sort: {ratings: -1}},
@@ -127,17 +103,11 @@ exports.getFeaturedHotels = async (req,res) => {
             }
         })
 
-    }catch(error) {
-            res.status(500).json({
-            status: "fail",
-            message: "Something went wrong, please try again later. Error: "+ error.message
-        })
-    }
-}
+})
 
 //Get the hotels by city
-exports.getHotelsByCity = async (req,res) => {
-    try{
+exports.getHotelsByCity = catchAsync(async (req,res,next) => {
+
         const hotelsByCity = await Hotel.aggregate([
             {$group:{
                 _id: "$city",
@@ -159,17 +129,12 @@ exports.getHotelsByCity = async (req,res) => {
             }
         })
 
-    }catch(error){
-            res.status(500).json({
-            status: "fail",
-            message: "Something went wrong, please try again later. Error: "+ error.message
-        })
-    }
-} 
+
+}) 
 
 //Get the hotels by type
-exports.getHotelsByType = async (req,res) => {
-    try{
+exports.getHotelsByType = catchAsync(async (req,res,next) => {
+
         const hotelsByType = await Hotel.aggregate([
             {$group:{
                 _id: "$type",
@@ -190,13 +155,7 @@ exports.getHotelsByType = async (req,res) => {
             }
         })
 
-    }catch(error){
-            res.status(500).json({
-            status: "fail",
-            message: "Something went wrong, please try again later. Error: "+ error.message
-        })
-    }
-} 
+}) 
 
 
 /**

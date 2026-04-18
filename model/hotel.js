@@ -6,7 +6,8 @@ const hotelSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Hotel name is required'],
         trim: true,
-        match: /^[a-zA-Z]/
+        match: /^[a-zA-Z]/,
+        unique: true
     },
     description: {
         type: String,
@@ -42,8 +43,8 @@ const hotelSchema = new mongoose.Schema({
     },
     ratings: {
         type: Number,
-        min: 0,
-        max: 5
+        min: [0, "Ratings cannot be less than 0"],
+        max: [5, "Ratings cannot be greater than 5"]
         // validate: { // custom validator using 'validate property'
         //     validator : function(value) {
         //         return value >= 0 && value <= 5;
@@ -109,7 +110,7 @@ const hotelSchema = new mongoose.Schema({
     })
 
     hotelSchema.post('findOneAndUpdate', function(doc) {
-        const content = `${new Date()}: A Hotel document with ${doc.name} is updated by: ${doc.createdBy}.\n`
+        const content = `${new Date()}: A Hotel document with ${doc?.name} is updated by: ${doc?.createdBy}.\n`
         fs.writeFileSync("./logs/log.txt", content, {flag: "a"});
     })
 
