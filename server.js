@@ -8,7 +8,7 @@ const app = require("./app");
 const contString = process.env.CONNECTION_STRING
 mongoose.connect(contString)
 .then((conn) => console.log('Connection to db successful'))
-.catch((err) => console.error('Could not connect to MongoDB', err))
+//.catch((err) => console.error('Could not connect to MongoDB', err))
 
 // //mongoose event - just for reference
 // const db = mongoose.connection
@@ -20,7 +20,17 @@ mongoose.connect(contString)
 
 //create and listen web server
 const port = process.env.PORT | 3000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
     console.log("Express Server is up and running..");
     
 });
+
+//Handling rejected promise globally
+process.on('unhandledRejection', (error) => {
+    console.log(error.name +" : " + "error.message");
+    console.log("Unhandled rejection occurred. shutting down");
+
+    server.close(() => {
+        process.exit(1);
+    })    
+})
