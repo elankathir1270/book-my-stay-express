@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
         require: [true, "Email is a required field"],
         trim: true,
         lowercase: true,
-        unique: true,
+        unique: [true, "A user with same name is required field"],
         validate: [validator.isEmail, "Provided email is not valid"]
     },
     photo: String,
