@@ -70,7 +70,10 @@ exports.isAuthenticate = catchAsync(async(req,res,next) => {
         const error = new AppError("You are not logged in", 401)
         return next(error)
     }    
-    //Check if token is valid - not expired /not
+    //Check if token is valid - not expired /not manipulated
+    const decodedToken = jwt.verify(token, process.env.SECRET_KET);
+    console.log(decodedToken);
+    
 
     //If token is valid, check if user is exist
     

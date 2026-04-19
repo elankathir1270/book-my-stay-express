@@ -54,7 +54,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre('save',async function() {
     //Skip hashing if password is not modified
-    if(!this.isModified('password')) return next();
+    if(!this.isModified('password')) return next(); //this.isModified() is a built-in Mongoose document method.
 
     //Hash the password
     //const salt = bcrypt.genSalt(10) or 10
