@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
         require: [true, "Email is a required field"],
         trim: true,
         lowercase: true,
-        unique: [true, "A user with same name is required field"],
+        unique: [true, "A user with same email is already exists"],
         validate: [validator.isEmail, "Provided email is not valid"]
     },
     photo: String,
@@ -34,9 +34,19 @@ const userSchema = new mongoose.Schema({
         type: String,
         require:  [true, "Confirm Password is a required field"],
         trim: true,
-        minlength: 6
+        validate: {
+            validator: function(value) {
+                return value === this.password;
+            },
+            message: "Password and Confirm password do not match"
+        }
     }
 
 },{ timestamps: true}) //this additional option will add and update, createdAt and updatedAt timings.
+
+userSchema.pre('save', function() {
+    //Remove confirmPassword field from saved document.
+    this.confirmPassword = undefined;
+})
 
 module.exports = mongoose.model('User', userSchema);
