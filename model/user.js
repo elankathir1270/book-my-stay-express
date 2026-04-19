@@ -29,7 +29,8 @@ const userSchema = new mongoose.Schema({
         type: String,
         require: [true, "Password is a required field"],
         trim: true,
-        minlength: 6
+        minlength: 6,
+        select: false
     },
     confirmPassword: {
         type: String,
@@ -62,5 +63,10 @@ userSchema.pre('save',async function() {
     //Remove confirmPassword field from saved document.
     this.confirmPassword = undefined;
 })
+
+//Instance method
+userSchema.methods.comparePassword = async(password, savedPassword) => {
+    return bcrypt.compare(password, savedPassword);
+} 
 
 module.exports = mongoose.model('User', userSchema);
