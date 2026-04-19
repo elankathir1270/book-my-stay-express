@@ -44,7 +44,7 @@ exports.login = catchAsync(async (req,res,next) => {
     //Check password matches the saved password
     const isMatch = await user.comparePassword(password, user.password);
     if(!isMatch){
-        const error = new AppError("Password is not correct", 403);
+        const error = new AppError("Password is not correct", 401);
         return next(error);
     }
 
@@ -74,8 +74,13 @@ exports.isAuthenticate = catchAsync(async(req,res,next) => {
     const decodedToken = jwt.verify(token, process.env.SECRET_KET);
     console.log(decodedToken);
     
-
     //If token is valid, check if user is exist
+    const user = await User.findById(decodedToken.userId);
+
+    if(!user){
+        const error = new AppError("User does not exist. Access denied", 401)
+        return next(error) 
+    }
     
     //Check if user has changed the password after the token was issued
 

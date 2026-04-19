@@ -66,7 +66,7 @@ module.exports = (error,req,res,next) => {
         devErrors(res, error);
     }
     else{
-        let appError = error 
+        let appError = error //or {...error, message: error.message}
         //{...error} spread way only copies only enumerable properties(ex: error.statusCode) by default Error object properties are NOT enumerable
         if(error.name === 'CastError'){
             appError = handleCastError(error);
