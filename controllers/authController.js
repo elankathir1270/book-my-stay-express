@@ -56,3 +56,28 @@ exports.login = catchAsync(async (req,res,next) => {
         token,
     })
 })
+
+
+exports.isAuthenticate = catchAsync(async(req,res,next) => {
+    //Read access token from the request header
+    const authToken = req.headers.authorization;
+    let token = null;
+
+    if(authToken && authToken.startsWith('Bearer')){
+        token = authToken.split(' ')[1] //Bearer + access token string
+    }
+    if(!token) {
+        const error = new AppError("You are not logged in", 401)
+        return next(error)
+    }    
+    //Check if token is valid - not expired /not
+
+    //If token is valid, check if user is exist
+    
+    //Check if user has changed the password after the token was issued
+
+    //Every check is success - allow access to protected route
+
+
+    next();
+});
