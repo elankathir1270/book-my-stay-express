@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcryptjs')
 
 const userSchema = new mongoose.Schema({
     firstname: {
@@ -44,7 +45,20 @@ const userSchema = new mongoose.Schema({
 
 },{ timestamps: true}) //this additional option will add and update, createdAt and updatedAt timings.
 
-userSchema.pre('save', function() {
+/**
+ note:
+ Validation will be completed before the pre hook (pre('save')) run.
+ Pre hook (pre('save')) will run before data is saved to db.
+ */
+
+userSchema.pre('save',async function() {
+    //Skip hashing if password is not modified
+    if(!this.isModified('password')) return next();
+
+    //Hash the password
+    //const salt = bcrypt.genSalt(10) or 10
+    this.password = await bcrypt.hash(this.password, 10);
+
     //Remove confirmPassword field from saved document.
     this.confirmPassword = undefined;
 })
