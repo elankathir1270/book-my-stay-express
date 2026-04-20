@@ -13,12 +13,12 @@ hotelRouter.route('/get-hotels-by-type')
 
 hotelRouter.route('/')
 .get(hotelsController.getAll)
-.post(authController.isAuthenticate,hotelsController.create)
+.post(authController.isAuthenticate,authController.isAuthorized('admin','super'),hotelsController.create)
                  
 hotelRouter.route('/:id')
 .get(hotelsController.getById)
-.patch(authController.isAuthenticate,hotelsController.update)
-.delete(authController.isAuthenticate,hotelsController.delete)
+.patch(authController.isAuthenticate,authController.isAuthorized('admin'),hotelsController.update)
+.delete(authController.isAuthenticate,authController.isAuthorized('admin','super'),hotelsController.delete)
 
 
 /**

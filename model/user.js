@@ -43,7 +43,12 @@ const userSchema = new mongoose.Schema({
             message: "Password and Confirm password do not match"
         }
     },
-    passwordChangedAt : Date
+    passwordChangedAt : Date,
+    role: {
+        type: String,
+        enum: ["user", "admin", "super"],
+        default: "user"
+    }
 
 },{ timestamps: true}) //this additional option will add and update, createdAt and updatedAt timings.
 
