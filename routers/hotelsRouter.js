@@ -1,5 +1,6 @@
 const express = require('express');
 const hotelsController = require('../controllers/hotelController')
+const authController = require('../controllers/authController')
 
 const hotelRouter = express.Router();
 
@@ -12,12 +13,12 @@ hotelRouter.route('/get-hotels-by-type')
 
 hotelRouter.route('/')
 .get(hotelsController.getAll)
-.post(hotelsController.create)
+.post(authController.isAuthenticate,authController.isAuthorized('admin','super'),hotelsController.create)
                  
 hotelRouter.route('/:id')
 .get(hotelsController.getById)
-.patch(hotelsController.update)
-.delete(hotelsController.delete)
+.patch(authController.isAuthenticate,authController.isAuthorized('admin'),hotelsController.update)
+.delete(authController.isAuthenticate,authController.isAuthorized('admin','super'),hotelsController.delete)
 
 
 /**

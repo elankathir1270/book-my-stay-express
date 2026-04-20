@@ -3,7 +3,8 @@ const morgan = require('morgan');
 const hotelRouter = require('./routers/hotelsRouter');
 const userRouter = require('./routers/usersRouter');
 const AppError = require('./utilities/appError');
-const globalErrorHandler = require('./controllers/errorController')
+const globalErrorHandler = require('./controllers/errorController');
+const authRouter = require('./routers/authRouter');
 
 //Creating express app
 //get instance of express function
@@ -32,6 +33,7 @@ app.use((req,res,next) =>  {
 //Adding routes for app
 app.use('/api/v1/hotels', hotelRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/auth', authRouter);
 
 
 //Default route

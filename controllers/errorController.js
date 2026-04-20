@@ -47,6 +47,16 @@ const handleValidationError = (error) => {
     return new AppError(errorMessage,400);
 }
 
+const handleJwtError = (error) => {
+    const errorMessage = `Access token is not valid, please login again.`
+    return new AppError(errorMessage,401);
+}
+
+const handleTokenExpiredError = (error) => {
+    const errorMessage = `Access token has expired, please login again.`
+    return new AppError(errorMessage,401);
+}
+
 module.exports = (error,req,res,next) => {
 
     error.statusCode = error.statusCode || 500;
@@ -56,7 +66,7 @@ module.exports = (error,req,res,next) => {
         devErrors(res, error);
     }
     else{
-        let appError = error 
+        let appError = error //or {...error, message: error.message}
         //{...error} spread way only copies only enumerable properties(ex: error.statusCode) by default Error object properties are NOT enumerable
         if(error.name === 'CastError'){
             appError = handleCastError(error);
@@ -66,6 +76,12 @@ module.exports = (error,req,res,next) => {
         }
         if(error.name === 'ValidationError') {
             appError = handleValidationError(error)
+        }
+        if(error.name === 'JsonWebTokenError') {
+            appError = handleJwtError(error)
+        }
+        if(error.name === 'TokenExpiredError') {
+            appError = handleTokenExpiredError(error)
         }
 
         prodErrors(res,appError);
