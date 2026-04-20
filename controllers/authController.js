@@ -78,14 +78,20 @@ exports.isAuthenticate = catchAsync(async(req,res,next) => {
     const user = await User.findById(decodedToken.userId);
 
     if(!user){
-        const error = new AppError("User does not exist. Access denied", 401)
+        const error = new AppError("User does not exist. Access denied", 401);
         return next(error) 
     }
     
     //Check if user has changed the password after the token was issued
+    const passwordWasChanged = await user.isPasswordChanged(decodedToken.iat);
+
+    if(passwordWasChanged) {
+        const error = new AppError("Password was changed, please login again");
+        return next(error);
+    }
 
     //Every check is success - allow access to protected route
-
+    req.user = user;
 
     next();
 });

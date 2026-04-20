@@ -42,7 +42,8 @@ const userSchema = new mongoose.Schema({
             },
             message: "Password and Confirm password do not match"
         }
-    }
+    },
+    passwordChangedAt : Date
 
 },{ timestamps: true}) //this additional option will add and update, createdAt and updatedAt timings.
 
@@ -67,6 +68,15 @@ userSchema.pre('save',async function() {
 //Instance method
 userSchema.methods.comparePassword = async(password, savedPassword) => {
     return bcrypt.compare(password, savedPassword);
-} 
+}
+
+userSchema.methods.isPasswordChanged = async function(tokenIssuedAt) {
+
+    if(this.passwordChangedAt) {
+        const passwordChangeTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000,10);
+        return tokenIssuedAt < passwordChangeTimestamp;  
+    }
+    return false
+}
 
 module.exports = mongoose.model('User', userSchema);
