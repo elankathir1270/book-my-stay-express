@@ -2,6 +2,7 @@ const catchAsync = require('../utilities/catchAsync');
 const User = require('../model/user');
 const jwt = require('jsonwebtoken');
 const AppError = require('../utilities/appError');
+const sendEmail = require('../utilities/email');
 
 //Generate JWT 
 const signToken = (userId) => {
@@ -55,6 +56,51 @@ exports.login = catchAsync(async (req,res,next) => {
         status: "success",
         token,
     })
+})
+
+exports.forgotPassword = catchAsync(async (req,res,next) => {
+    //Find the user based on provided email
+    const user = await User.findOne({email: req.body.email});
+
+    if(!user) {
+        const error = new AppError("Cannot find the user with provided email", 404);
+        return next(error);
+    }
+
+    //Generate a token
+    const plainResetToken = user.generateResetToken();
+    await user.save({validateBeforeSave : false});
+
+    //Send a email to user with password reset link
+    const resetTokenLink = `${req.protocol}://${req.get('host')}/api/v1/resetPassword/${plainResetToken}`;
+    const body = `We have received a password reset link, please use the below link to reset the password.\n\n ${resetTokenLink}\n\n This password link is only valid for 10 minutes.`;
+
+    try{
+    await sendEmail({
+        email: user.email,
+        subject: 'Password change request received',
+        message: body,
+
+    })
+
+    //Send response
+    res.status(200).json({
+        status: "success",
+        message: "Password reset link has been sent to user email."
+    })
+    }catch(error){
+        user.resetToken = undefined;
+        user.resetTokenExpiresAt = undefined;
+        await user.save({validateBeforeSave : false});
+
+        const err = new AppError("There was an error sending password reset email. Please try again later.", 500 );
+        return next(err);
+    }
+
+
+})
+
+exports.resetPassword = catchAsync(async (req,res,next) => {
 })
 
 

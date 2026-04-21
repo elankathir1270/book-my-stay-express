@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 
 const userSchema = new mongoose.Schema({
     firstname: {
@@ -48,7 +49,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         enum: ["user", "admin", "super"],
         default: "user"
-    }
+    },
+    resetToken: String,
+    resetTokenExpiresAt: Date
 
 },{ timestamps: true}) //this additional option will add and update, createdAt and updatedAt timings.
 
@@ -60,7 +63,7 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre('save',async function() {
     //Skip hashing if password is not modified
-    if(!this.isModified('password')) return next(); //this.isModified() is a built-in Mongoose document method.
+    if(!this.isModified('password')) return; //this.isModified() is a built-in Mongoose document method.
 
     //Hash the password
     //const salt = bcrypt.genSalt(10) or 10
@@ -82,6 +85,16 @@ userSchema.methods.isPasswordChanged = async function(tokenIssuedAt) {
         return tokenIssuedAt < passwordChangeTimestamp;  
     }
     return false
+}
+
+userSchema.methods.generateResetToken = function() {
+    //creating token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    //hashing token
+    this.resetToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+    this.resetTokenExpiresAt = Date.now() + (10 * 60 * 1000); //10 minis with ms
+
+    return resetToken;
 }
 
 module.exports = mongoose.model('User', userSchema);
