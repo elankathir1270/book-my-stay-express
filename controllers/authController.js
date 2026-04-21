@@ -3,6 +3,7 @@ const User = require('../model/user');
 const jwt = require('jsonwebtoken');
 const AppError = require('../utilities/appError');
 const sendEmail = require('../utilities/email');
+const crypto = require('crypto');
 
 //Generate JWT 
 const signToken = (userId) => {
@@ -72,7 +73,7 @@ exports.forgotPassword = catchAsync(async (req,res,next) => {
     await user.save({validateBeforeSave : false});
 
     //Send a email to user with password reset link
-    const resetTokenLink = `${req.protocol}://${req.get('host')}/api/v1/resetPassword/${plainResetToken}`;
+    const resetTokenLink = `${req.protocol}://${req.get('host')}/api/v1/auth/resetPassword/${plainResetToken}`;
     const body = `We have received a password reset link, please use the below link to reset the password.\n\n ${resetTokenLink}\n\n This password link is only valid for 10 minutes.`;
 
     try{
@@ -101,6 +102,36 @@ exports.forgotPassword = catchAsync(async (req,res,next) => {
 })
 
 exports.resetPassword = catchAsync(async (req,res,next) => {
+    //Find the user with the token
+    const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex');
+    const user = await User.findOne({
+        resetToken: hashedToken, 
+        resetTokenExpiresAt: {$gt: Date.now()}
+    });
+
+    if(!user) {
+        const error = new AppError("Reset token is not valid or it has expired", 400);
+        return next(error); 
+    }
+
+    //Update the fields
+    user.password = req.body.password;
+    user.confirmPassword = req.body.confirmPassword;
+
+    user.resetToken = undefined;
+    user.resetTokenExpiresAt = undefined;
+    user.passwordChangedAt = Date.now();
+
+    //before save validation will happen model, so there password and confirmPassword will be validated. 
+    await user.save();
+
+    //Create a token and send it in response (Auto login)
+    const token = signToken(user._id);
+
+    res.status(200).json({
+        status: "success",
+        token,
+    })
 })
 
 
