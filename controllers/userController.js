@@ -1,3 +1,4 @@
+const { status } = require("express/lib/response");
 const AppError = require("../utilities/appError");
 const catchAsync = require("../utilities/catchAsync");
 const signToken = require('../utilities/signToken');
@@ -37,5 +38,33 @@ exports.updatePassword = catchAsync(async (req,res,next) => {
             user
         }
     })
+})
+
+exports.updateMe = catchAsync(async (req,res,next) => {
+    //Check if password also provided in req body
+    if(req.body.password || req.body.confirmPassword){
+        const error = new AppError('Use update password to change your password', 400);
+        return next(error);
+    }
+
+    //Update user details
+    const userDetailsToUpdate = {
+        firstname: req.body.firstname || req.user.firstname,
+        lastname: req.body.lastname || req.user.lastname,
+    }
+
+    //Save the change data in DB
+    const updatedUser = await User.findByIdAndUpdate(
+        req.user._id, 
+        userDetailsToUpdate,
+        {runValidators : true, new: true});
+
+    res.status(200).json({
+        status: "success",
+        data: {
+            data: updatedUser
+        }
+    })    
+    
 })
 

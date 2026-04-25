@@ -11,7 +11,8 @@ const paramMiddleware = (req,res,next,value,name) => {
 }
 usersRouter.param('id', paramMiddleware);
 
-usersRouter.route('/updatePassword').patch(authController.isAuthenticate,userController.updatePassword)
+usersRouter.route('/updatePassword').patch(authController.isAuthenticate,userController.updatePassword);
+usersRouter.route('/updateMe').patch(authController.isAuthenticate,userController.updateMe);
 
 
 module.exports = usersRouter;
