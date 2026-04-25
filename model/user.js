@@ -50,6 +50,11 @@ const userSchema = new mongoose.Schema({
         enum: ["user", "admin", "super"],
         default: "user"
     },
+    isActive: {
+        type: Boolean,
+        default: true,
+        select: false
+    },
     resetToken: String,
     resetTokenExpiresAt: Date
 
@@ -71,6 +76,10 @@ userSchema.pre('save',async function() {
 
     //Remove confirmPassword field from saved document.
     this.confirmPassword = undefined;
+})
+
+userSchema.pre(/^find/, async function() {
+    this.find({isActive : true})
 })
 
 //Instance method

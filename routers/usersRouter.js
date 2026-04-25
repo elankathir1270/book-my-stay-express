@@ -13,6 +13,7 @@ usersRouter.param('id', paramMiddleware);
 
 usersRouter.route('/updatePassword').patch(authController.isAuthenticate,userController.updatePassword);
 usersRouter.route('/updateMe').patch(authController.isAuthenticate,userController.updateMe);
+usersRouter.route('/deleteMe').delete(authController.isAuthenticate,userController.deleteMe);
 
 
 module.exports = usersRouter;
