@@ -51,6 +51,16 @@ exports.updateMe = catchAsync(async (req,res,next) => {
     const userDetailsToUpdate = {
         firstname: req.body.firstname || req.user.firstname,
         lastname: req.body.lastname || req.user.lastname,
+        bio: req.body.bio || req.body.bio,
+        address: {
+            city: req.body.address.city || req.body.address.city,
+            country: req.body.address.country || req.body.address.country,
+        },
+        contact: {
+            altEmail: req.body.contact.altEmail || req.body.contact.altEmail,
+            code: req.body.contact.code || req.body.contact.code,
+            phone: req.body.contact.phone || req.body.contact.phone,
+        }
     }
 
     //Save the change data in DB
@@ -79,6 +89,17 @@ exports.deleteMe = catchAsync(async (req,res,next) => {
     res.status(204).json({
         status: "success",
         data: null
+    })
+})
+
+exports.getDetails = catchAsync(async (req,res,next) => {
+    const user = await User.findById(req.user._id);
+
+    res.status(200).json({
+        status: "success",
+        data: {
+            user
+        }
     })
 })
 
