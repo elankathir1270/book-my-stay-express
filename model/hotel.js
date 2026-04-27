@@ -18,7 +18,7 @@ const hotelSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Hotel type is required'],
         enum:{
-            values: ["Hotel","Resort","Villa","Apartment","Cabin"],
+            values: ["hotel","resort","villa","apartment","cabin"],
             message: "Provided hotel type is not valid" 
         } // type will allow only this values
     },
@@ -31,8 +31,32 @@ const hotelSchema = new mongoose.Schema({
         required: [true, 'Hotel city is required'],
     },
     address: {
-        type: String,
-        required: [true, 'Hotel address is required'],
+        addressLine1: {
+            type: String,
+            required: [true, 'Address line 1 is a required field'],
+            maxLength: 100
+        },
+        addressLine2: {
+            type: String,
+            maxLength: 100
+        },
+        landmark: String,
+        zipCode: {
+            type: String,
+            required: [true, "ZIP code is a required field."]
+        },
+    location: {
+        type: {
+            type: String,
+            default: 'Point',
+            enum: ['Point'],
+            required: true
+        },
+    coordinates: {
+        type: [Number],    // [longitude, latitude]
+        required: true
+    }
+}
     },
     distance: {
         type: String,
