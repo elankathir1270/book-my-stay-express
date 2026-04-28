@@ -1,8 +1,6 @@
 const catchAsync = require('../utilities/catchAsync');
 const Room = require('./../model/room');
 const Hotel = require('./../model/hotel');
-const req = require('express/lib/request');
-
 
 exports.create = catchAsync(async (req,res,next) => {
     const hotelId = req.params.hotelId;
