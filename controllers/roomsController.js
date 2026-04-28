@@ -1,9 +1,10 @@
 const catchAsync = require('../utilities/catchAsync');
 const Room = require('./../model/room');
 const Hotel = require('./../model/hotel');
+const req = require('express/lib/request');
 
 
-exports.create = catchAsync(async(req,res,next) => {
+exports.create = catchAsync(async (req,res,next) => {
     const hotelId = req.params.hotelId;
     const newRoom = await Room.create(req.body);
 
@@ -15,4 +16,22 @@ exports.create = catchAsync(async(req,res,next) => {
                 room: newRoom
             }
         })    
+})
+
+exports.delete = catchAsync(async (req,res,next) => {
+    const hotelId = req.params.hotelId;
+
+    //Deleting room document
+    const deletedRoom = await Room.findByIdAndDelete(req.params.id);
+
+    //Updating it in hotel document(remove it in hotel document also)
+    await Hotel.findByIdAndUpdate(hotelId, {$pull: {rooms: req.params.id}});
+
+    res.status(204).json({
+        status: "success",
+        data: {
+            room: deletedRoom
+        }
+    });
+    
 })

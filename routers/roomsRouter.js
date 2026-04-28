@@ -11,5 +11,12 @@ roomRouter.route('/').post(
     roomsController.create
 )
 
+roomRouter.route('/:id').delete(
+    authController.isAuthenticate,
+    authController.isAuthorized('admin'),
+    roomsController.delete
+)
+
+
 
 module.exports = roomRouter;
