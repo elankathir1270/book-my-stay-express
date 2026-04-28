@@ -40,7 +40,7 @@ exports.getById = catchAsync(async (req,res,next) => {
         const hotel = await Hotel.findById(id).populate(
             {
                 path: 'rooms',
-                select: '__v'
+                select: '-__v'
             }
         );//findOne({_id: id});
         /**

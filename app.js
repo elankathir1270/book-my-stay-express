@@ -35,8 +35,8 @@ app.use((req,res,next) =>  {
 //Adding routes for app
 app.use('/api/v1/hotels', hotelRouter);
 app.use('/api/v1/users', userRouter);
-app.use('/api/v1/rooms', roomsRouter);
 app.use('/api/v1/auth', authRouter);
+//app.use('/api/v1/rooms', roomsRouter);
 
 
 //Default route

@@ -1,8 +1,12 @@
 const express = require('express');
 const hotelsController = require('../controllers/hotelController')
 const authController = require('../controllers/authController')
+const roomsRouter = require('../routers/roomsRouter');
 
 const hotelRouter = express.Router();
+
+//nested routes
+hotelRouter.use('/:hotelId/rooms', roomsRouter); //mounting the rooms router to this path
 
 hotelRouter.route('/get-featured')
 .get(hotelsController.getFeaturedHotels);
