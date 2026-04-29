@@ -1,6 +1,4 @@
 const Review = require('./../model/review');
-const Hotel = require('./../model/hotel');
-const User = require('./../model/user');
 const catchAsync = require('../utilities/catchAsync');
 
 exports.create = catchAsync(async (req,res,next) => {
@@ -19,4 +17,18 @@ exports.create = catchAsync(async (req,res,next) => {
             review: newReview
         }
     })
+})
+
+exports.getAll = catchAsync(async (req,res,next) => {
+   // const reviews = await Review.find({ hotel: req.params.hotelId });//to get all reviews of specific hotel by hotelId
+    const reviews = await Review.find();
+
+    res.status(200).json({
+        status: 'success',
+        count: reviews.length,
+        data: {
+            reviews
+        }
+    })
+
 })

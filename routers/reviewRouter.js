@@ -10,5 +10,6 @@ reviewRouter.route('/')
     authController.isAuthorized('user'),
     reviewController.create
 )
+.get(reviewController.getAll)
 
 module.exports = reviewRouter;
