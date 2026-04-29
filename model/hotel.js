@@ -91,6 +91,10 @@ const hotelSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
     createdBy: String,
   },
   {
