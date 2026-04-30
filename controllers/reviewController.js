@@ -1,5 +1,6 @@
 const Review = require('./../model/review');
 const catchAsync = require('../utilities/catchAsync');
+const factory = require('./handlerFactory');
 
 exports.create = catchAsync(async (req,res,next) => {
     const reviewData = {
@@ -32,3 +33,7 @@ exports.getAll = catchAsync(async (req,res,next) => {
     })
 
 })
+
+exports.delete = factory.deleteOne(Review, 'review');
+
+exports.update = factory.updateOne(Review, 'review');

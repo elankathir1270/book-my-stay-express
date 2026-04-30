@@ -2,6 +2,7 @@ const ApiFeature = require('./../utilities/features');
 const Hotel = require('./../model/hotel.js');
 const AppError = require('./../utilities/appError');
 const catchAsync = require('../utilities/catchAsync');
+const factory = require('./handlerFactory');
 
 
 
@@ -62,39 +63,41 @@ exports.getById = catchAsync(async (req,res,next) => {
 
 })
 
-exports.update = catchAsync(async (req,res,next) => {
+// exports.update = catchAsync(async (req,res,next) => {
 
-        const body = req.body;
-        const id = req.params.id;
-        const updatedHotel = await Hotel.findOneAndUpdate( {_id: id}, body, { new: true, runValidators: true }); //updateOne({_id : id}, req.body);  
+//         const body = req.body;
+//         const id = req.params.id;
+//         const updatedHotel = await Hotel.findOneAndUpdate( {_id: id}, body, { new: true, runValidators: true }); //updateOne({_id : id}, req.body);  
         
-        if(!updatedHotel) {
-            const error = new AppError('The hotel with given ID is not found', 404)
-            return next(error);
-        }
+//         if(!updatedHotel) {
+//             const error = new AppError('The hotel with given ID is not found', 404)
+//             return next(error);
+//         }
 
-        res.status(200).json({
-            status: "success",
-            data: {
-                hotel : updatedHotel
-            }
-        })
+//         res.status(200).json({
+//             status: "success",
+//             data: {
+//                 hotel : updatedHotel
+//             }
+//         })
 
-})
+// })
+exports.update = factory.updateOne(Hotel,'hotel');
 
-exports.delete = catchAsync(async (req,res,next) => {
+// exports.delete = catchAsync(async (req,res,next) => {
    
-        const deleteHotel = await Hotel.findByIdAndDelete(req.params.id); //deleteOne({_id : req.params.id });
+//         const deleteHotel = await Hotel.findByIdAndDelete(req.params.id); //deleteOne({_id : req.params.id });
 
-        if(!deleteHotel) {
-            const error = new AppError('The hotel with given ID is not found', 404)
-            return next(error);
-        }       
+//         if(!deleteHotel) {
+//             const error = new AppError('The hotel with given ID is not found', 404)
+//             return next(error);
+//         }       
 
-        res.status(204).json({
-            status: "success",
-        })
-})
+//         res.status(204).json({
+//             status: "success",
+//         })
+// })
+exports.delete = factory.deleteOne(Hotel,'hotel');
 
 //Get all featured hotels
 exports.getFeaturedHotels = catchAsync(async (req,res,next) => {
