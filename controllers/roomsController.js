@@ -1,6 +1,7 @@
 const catchAsync = require('../utilities/catchAsync');
 const Room = require('./../model/room');
 const Hotel = require('./../model/hotel');
+const factory = require('./../controllers/handlerFactory');
 
 exports.create = catchAsync(async (req,res,next) => {
     const hotelId = req.params.hotelId;
@@ -55,4 +56,6 @@ exports.getById = (async (req,res,next) => {
             room
         }
     })    
-})
+});
+
+exports.update = factory.updateOne(Room, 'room');

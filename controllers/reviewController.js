@@ -35,3 +35,5 @@ exports.getAll = catchAsync(async (req,res,next) => {
 })
 
 exports.delete = factory.deleteOne(Review, 'review');
+
+exports.update = factory.updateOne(Review, 'review');

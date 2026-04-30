@@ -18,5 +18,10 @@ reviewRouter.route('/:id')
     authController.isAuthorized('user'),
     reviewController.delete
 )
+.patch(
+    authController.isAuthenticate,
+    authController.isAuthorized('user'),
+    reviewController.update
+)
 
 module.exports = reviewRouter;

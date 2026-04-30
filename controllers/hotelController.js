@@ -63,25 +63,26 @@ exports.getById = catchAsync(async (req,res,next) => {
 
 })
 
-exports.update = catchAsync(async (req,res,next) => {
+// exports.update = catchAsync(async (req,res,next) => {
 
-        const body = req.body;
-        const id = req.params.id;
-        const updatedHotel = await Hotel.findOneAndUpdate( {_id: id}, body, { new: true, runValidators: true }); //updateOne({_id : id}, req.body);  
+//         const body = req.body;
+//         const id = req.params.id;
+//         const updatedHotel = await Hotel.findOneAndUpdate( {_id: id}, body, { new: true, runValidators: true }); //updateOne({_id : id}, req.body);  
         
-        if(!updatedHotel) {
-            const error = new AppError('The hotel with given ID is not found', 404)
-            return next(error);
-        }
+//         if(!updatedHotel) {
+//             const error = new AppError('The hotel with given ID is not found', 404)
+//             return next(error);
+//         }
 
-        res.status(200).json({
-            status: "success",
-            data: {
-                hotel : updatedHotel
-            }
-        })
+//         res.status(200).json({
+//             status: "success",
+//             data: {
+//                 hotel : updatedHotel
+//             }
+//         })
 
-})
+// })
+exports.update = factory.updateOne(Hotel,'hotel');
 
 // exports.delete = catchAsync(async (req,res,next) => {
    

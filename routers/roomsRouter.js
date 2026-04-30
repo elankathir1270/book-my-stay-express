@@ -19,6 +19,11 @@ roomRouter.route('/:id').delete(
     roomsController.delete
 )
 .get(roomsController.getById)
+.patch(
+    authController.isAuthenticate,
+    authController.isAuthorized('admin'),
+    roomsController.update
+)
 
 
 
