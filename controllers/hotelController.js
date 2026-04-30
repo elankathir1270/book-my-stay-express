@@ -42,7 +42,7 @@ exports.getById = catchAsync(async (req,res,next) => {
                 path: 'rooms',
                 select: '-__v'
             }
-        );//findOne({_id: id});
+        ).populate('reviews');
         /**
          note: behind the sean as populate method query and fetch the document
          using many time in express app or querying big data is not advisable with 'populate'

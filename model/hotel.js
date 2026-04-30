@@ -107,6 +107,12 @@ hotelSchema.virtual("isPremium").get(function () {
   return this.cheapestPrice >= 200;
 });
 
+hotelSchema.virtual('reviews', {
+    ref: 'Review',
+    foreignField: 'hotel',
+    localField: '_id'
+})
+
 //This document middleware only called on .save(), .create() is called
 //Not work for - insertOne(), insertMany().
 
