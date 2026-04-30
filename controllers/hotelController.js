@@ -2,6 +2,7 @@ const ApiFeature = require('./../utilities/features');
 const Hotel = require('./../model/hotel.js');
 const AppError = require('./../utilities/appError');
 const catchAsync = require('../utilities/catchAsync');
+const factory = require('./handlerFactory');
 
 
 
@@ -82,19 +83,20 @@ exports.update = catchAsync(async (req,res,next) => {
 
 })
 
-exports.delete = catchAsync(async (req,res,next) => {
+// exports.delete = catchAsync(async (req,res,next) => {
    
-        const deleteHotel = await Hotel.findByIdAndDelete(req.params.id); //deleteOne({_id : req.params.id });
+//         const deleteHotel = await Hotel.findByIdAndDelete(req.params.id); //deleteOne({_id : req.params.id });
 
-        if(!deleteHotel) {
-            const error = new AppError('The hotel with given ID is not found', 404)
-            return next(error);
-        }       
+//         if(!deleteHotel) {
+//             const error = new AppError('The hotel with given ID is not found', 404)
+//             return next(error);
+//         }       
 
-        res.status(204).json({
-            status: "success",
-        })
-})
+//         res.status(204).json({
+//             status: "success",
+//         })
+// })
+exports.delete = factory.deleteOne(Hotel,'hotel');
 
 //Get all featured hotels
 exports.getFeaturedHotels = catchAsync(async (req,res,next) => {

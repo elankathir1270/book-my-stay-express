@@ -12,4 +12,11 @@ reviewRouter.route('/')
 )
 .get(reviewController.getAll)
 
+reviewRouter.route('/:id')
+.delete(
+    authController.isAuthenticate,
+    authController.isAuthorized('user'),
+    reviewController.delete
+)
+
 module.exports = reviewRouter;
