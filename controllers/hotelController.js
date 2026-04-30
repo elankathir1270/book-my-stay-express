@@ -37,7 +37,16 @@ exports.create = catchAsync(async (req,res,next) => {
 
 exports.getById = catchAsync(async (req,res,next) => {
         const id = req.params.id;    
-        const hotel = await Hotel.findById(id);//findOne({_id: id});
+        const hotel = await Hotel.findById(id).populate(
+            {
+                path: 'rooms',
+                select: '-__v'
+            }
+        ).populate('reviews');
+        /**
+         note: behind the sean as populate method query and fetch the document
+         using many time in express app or querying big data is not advisable with 'populate'
+         */
 
         if(!hotel) {
             const error = new AppError('The hotel with given ID is not found', 404)
