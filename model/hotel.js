@@ -31,6 +31,10 @@ const hotelSchema = new mongoose.Schema(
       type: String,
       required: [true, "Hotel city is required"],
     },
+    country: {
+      type: String,
+      required: [true, "Hotel country is required"],
+    },
     address: {
       addressLine1: {
         type: String,
@@ -66,16 +70,21 @@ const hotelSchema = new mongoose.Schema(
     images: {
       type: [String],
     },
-    ratings: {
+    avgRating: {
       type: Number,
       min: [0, "Ratings cannot be less than 0"],
       max: [5, "Ratings cannot be greater than 5"],
+      default: 3
       // validate: { // custom validator using 'validate property'
       //     validator : function(value) {
       //         return value >= 0 && value <= 5;
       //     },
       //     message: `The 'ratings' field should have value between 0 to 5. Current specified value is ({VALUE})`
       // }
+    },
+    reviewCount: {
+      type: Number,
+      default: 0
     },
     rooms: [
       {
