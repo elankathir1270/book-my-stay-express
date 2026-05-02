@@ -30,6 +30,11 @@ exports.updateOne = (Model, name) => {
       return next(error);
     }
 
+    if(Model.modelName === 'Room') {
+        const hotelId = req.params.hotelId;
+        await Model.calcCheapestPrice(hotelId);
+    }
+
     res.status(200).json({
       status: "success",
       data: {

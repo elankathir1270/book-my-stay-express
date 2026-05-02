@@ -7,7 +7,9 @@ exports.create = catchAsync(async (req,res,next) => {
     const hotelId = req.params.hotelId;
     const newRoom = await Room.create(req.body);
 
-    await Hotel.findByIdAndUpdate(hotelId, {$push: {rooms: newRoom._id}})
+    await Hotel.findByIdAndUpdate(hotelId, {$push: {rooms: newRoom._id}});
+
+    await Room.calcCheapestPrice(hotelId);
 
         res.status(201).json({
             status: "success",
@@ -25,6 +27,8 @@ exports.delete = catchAsync(async (req,res,next) => {
 
     //Updating it in hotel document(remove it in hotel document also)
     await Hotel.findByIdAndUpdate(hotelId, {$pull: {rooms: req.params.id}});
+
+    await Room.calcCheapestPrice(hotelId);
 
     res.status(204).json({
         status: "success",
