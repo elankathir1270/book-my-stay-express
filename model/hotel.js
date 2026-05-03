@@ -8,7 +8,6 @@ const hotelSchema = new mongoose.Schema(
       required: [true, "Hotel name is required"],
       trim: true,
       match: /^[a-zA-Z]/,
-      unique: true,
     },
     description: {
       type: String,
@@ -30,6 +29,10 @@ const hotelSchema = new mongoose.Schema(
     city: {
       type: String,
       required: [true, "Hotel city is required"],
+    },
+    country: {
+      type: String,
+      required: [true, "Hotel country is required"],
     },
     address: {
       addressLine1: {
@@ -66,16 +69,21 @@ const hotelSchema = new mongoose.Schema(
     images: {
       type: [String],
     },
-    ratings: {
+    avgRating: {
       type: Number,
       min: [0, "Ratings cannot be less than 0"],
       max: [5, "Ratings cannot be greater than 5"],
+      default: 3
       // validate: { // custom validator using 'validate property'
       //     validator : function(value) {
       //         return value >= 0 && value <= 5;
       //     },
       //     message: `The 'ratings' field should have value between 0 to 5. Current specified value is ({VALUE})`
       // }
+    },
+    reviewCount: {
+      type: Number,
+      default: 0
     },
     rooms: [
       {
@@ -86,6 +94,7 @@ const hotelSchema = new mongoose.Schema(
     cheapestPrice: {
       type: Number,
       require: true,
+      default: 120
     },
     featured: {
       type: Boolean,
@@ -94,6 +103,40 @@ const hotelSchema = new mongoose.Schema(
     isDeleted: {
       type: Boolean,
       default: false,
+    },
+    amenities: {
+    swimmingPool: {
+        type: Boolean,
+        default: false
+    },
+    gym: {
+        type: Boolean,
+        default: false
+    },
+    powerBackup: {
+        type: Boolean,
+        default: false
+    },
+    freeWifi: {
+        type: Boolean,
+        default: false
+    },
+    miniBar: {
+        type: Boolean,
+        default: false
+    },
+    roomService: {
+        type: Boolean,
+        default: false
+    },
+    elevator: {
+        type: Boolean,
+        default: false
+    },
+    kidsPlayArea: {
+        type: Boolean,
+        default: false
+    },
     },
     createdBy: String,
   },
@@ -112,6 +155,10 @@ hotelSchema.virtual('reviews', {
     foreignField: 'hotel',
     localField: '_id'
 })
+
+//Indexing the collection for easy search improves performance. 
+hotelSchema.index({cheapestPrice: 1, avgRating: -1}); 
+//when we specify 2 or more fields its compound index. 
 
 //This document middleware only called on .save(), .create() is called
 //Not work for - insertOne(), insertMany().
