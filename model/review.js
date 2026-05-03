@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Hotel = require('./../model/hotel');
 
-const reviewSchema = mongoose.Schema({
+const reviewSchema = new mongoose.Schema({
     ratings: {
         type: Number,
         required: true,
@@ -23,6 +23,9 @@ const reviewSchema = mongoose.Schema({
         required: true
     }
 },{timestamp: true});
+
+//this ensures a user only can give review for a hotel one time
+reviewSchema.index({hotel:1, user:1}, {unique: true}); 
 
 reviewSchema.pre(/^find/, function(){
     this.populate({
