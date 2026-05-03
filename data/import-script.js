@@ -37,7 +37,7 @@ const importDocuments = async () => {
     process.exit();
 }  
 
-//console.log(process.argv); //open project directory in terminal define path: './data/import-script.js -delete'
+//console.log(process.argv); //open project directory in terminal define path: 'node ./data/import-script.js -delete'
 
 if(process.argv[2] === '-delete'){
     deleteDocuments();
