@@ -6,11 +6,19 @@ const roomsRouter = require('./routers/roomsRouter');
 const AppError = require('./utilities/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const authRouter = require('./routers/authRouter');
+const rateLimit = require('express-rate-limit');
 
 
 //Creating express app
 //get instance of express function
 const app = express();
+
+//Rate limiting middleware
+app.use('/api', rateLimit({
+    max: 1000,
+    windowMs: 60*60*1000,
+    message: "We have received too many request from this ID, please try again after an hour"
+}))
 
 //Middleware function to get request body(req.body) in express
 //json() will return middleware function thats y we calling ().
