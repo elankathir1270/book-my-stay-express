@@ -10,6 +10,7 @@ const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const sanitize = require('@exortek/express-mongo-sanitize');
 const { xss } = require('express-xss-sanitizer');//returns object, from this obj we get xss().
+const hpp = require('hpp');
 
 
 //Creating express app
@@ -35,6 +36,22 @@ app.use(express.json({limit: '10kb'})); // can set limit for receiving data. app
 app.use(sanitize());
 app.use(xss());
 
+//Avoid http parameter pollution
+app.use(hpp());
+
+/**
+  It helps if app receives any parameter multiple times, it takes only last occurrence parameter value
+  ex: api/v1/hotels?sort=avgRating&cheapestPrice=220
+
+  if we whitelist can use multiple time a parameter
+  app.use(hpp({
+    whitelist: ['cheapestPrice']
+    }))  
+  ex: api/v1/hotels?sort=cheapestPrice&cheapestPrice=220
+*/
+
+
+
 //This middleware is to access static files(html,images) in express
 //note: It takes path as argument, meaning only from this folder can access the static files by any client.
 app.use(express.static('./public'))
@@ -43,12 +60,6 @@ app.use(express.static('./public'))
 if(process.env.NODE_ENV === 'development'){
     app.use(morgan('dev'));
 }
-
-//custom middleware
-app.use((req,res,next) =>  {
-    req.requestedAt = new Date().toISOString();
-    next();
-})
 
 
 //Adding routes for app
