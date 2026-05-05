@@ -8,6 +8,8 @@ const globalErrorHandler = require('./controllers/errorController');
 const authRouter = require('./routers/authRouter');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const sanitize = require('@exortek/express-mongo-sanitize');
+const { xss } = require('express-xss-sanitizer');//returns object, from this obj we get xss().
 
 
 //Creating express app
@@ -28,6 +30,10 @@ app.use('/api', rateLimit({
 //Middleware function to get request body(req.body) and provide it to req object in express
 //json() will return middleware function thats y we calling ().
 app.use(express.json({limit: '10kb'})); // can set limit for receiving data. app.use(express.json({limit: '10kb'}));
+
+//Data sanitization
+app.use(sanitize());
+app.use(xss());
 
 //This middleware is to access static files(html,images) in express
 //note: It takes path as argument, meaning only from this folder can access the static files by any client.
