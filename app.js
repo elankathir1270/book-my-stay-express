@@ -28,6 +28,13 @@ app.use('/api', rateLimit({
     message: "We have received too many request from this ID, please try again after an hour"
 }))
 
+app.use('/api/v1/auth/login', rateLimit({
+    max: 3,
+    windowMs: 60*60*1000,
+    skipSuccessfulRequests: true,
+    message: "We have received too many request from this ID, please try again after an hour"
+}))
+
 //Middleware function to get request body(req.body) and provide it to req object in express
 //json() will return middleware function thats y we calling ().
 app.use(express.json({limit: '10kb'})); // can set limit for receiving data. app.use(express.json({limit: '10kb'}));
