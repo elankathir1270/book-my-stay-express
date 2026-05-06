@@ -12,6 +12,17 @@ exports.signup = catchAsync(async (req,res,next) => {
     
     //Generate a token
     const token = signToken(newUser._id);
+
+    //Add token to HttpOnly Cookie
+    const options = {
+        maxAge: 7*24*60*60*1000, //7 days in ms
+        httpOnly: true
+    }
+    if(process.env.NODE_ENV === 'production'){
+        options.secure = true
+    }
+    
+    res.cookie('access_token', token, options);
     
     res.status(201).json({
         status: "success",
@@ -49,6 +60,17 @@ exports.login = catchAsync(async (req,res,next) => {
 
     //Create a token and send it in response
     const token = signToken(user._id);
+
+    //Add token to HttpOnly Cookie
+    const options = {
+        maxAge: 7*24*60*60*1000, //7 days in ms
+        httpOnly: true
+    }
+    if(process.env.NODE_ENV === 'production'){
+        options.secure = true
+    }
+    
+    res.cookie('access_token', token, options);
 
     res.status(200).json({
         status: "success",
