@@ -160,18 +160,10 @@ hotelSchema.virtual('reviews', {
 hotelSchema.index({cheapestPrice: 1, avgRating: -1}); 
 //when we specify 2 or more fields its compound index. 
 
-//This document middleware only called on .save(), .create() is called
-//Not work for - insertOne(), insertMany().
-
-hotelSchema.pre("save", function (next) {
-  //console.log(this); 'this' represents document object what we try save on db.
-  this.createdBy = "Elankathir";
-  // next(); //next it not recommended when its not a async operation
-});
 
 hotelSchema.pre("save", async function (next) {
-  if (this.cheapestPrice <= 50) {
-    throw new Error("Price of hotel cannot be less than 50");
+  if (this.cheapestPrice < 1) {
+    throw new Error("Price of hotel cannot be zero or negative value");
   }
   //next(); // async function doesn't need next()
 });
@@ -191,8 +183,8 @@ hotelSchema.pre("findOneAndUpdate", async function () {
   const update = this.getUpdate(); //object to update from client
   //console.log(update);
 
-  if (update.cheapestPrice && update.cheapestPrice < 50) {
-    throw new Error("Price of a hotel cannot be less than 50");
+  if (update.cheapestPrice && update.cheapestPrice < 1) {
+    throw new Error("Price of a hotel cannot be zero or negative value");
   }
 });
 

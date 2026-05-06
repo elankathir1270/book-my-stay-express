@@ -26,7 +26,10 @@ exports.getAll = catchAsync(async (req, res,next) => {
 
 exports.create = catchAsync(async (req,res,next) => {
 
-    const hotel = await Hotel.create(req.body);
+    const hotel = await Hotel.create({
+        ...req.body,
+        createdBy: req.user.email
+    });
 
         res.status(201).json({
             status: "success",
